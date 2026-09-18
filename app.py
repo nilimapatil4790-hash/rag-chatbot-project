@@ -7,10 +7,16 @@ import streamlit as st
 from dotenv import load_dotenv
 from huggingface_hub import InferenceClient
 
-# Load environment variables
-load_dotenv()
+# Load environment variablesload_dotenv()
 
-token = os.getenv("HF_TOKEN")
+try:
+    token = st.secrets["HF_TOKEN"]
+except Exception:
+    token = os.getenv("HF_TOKEN")
+
+if not token:
+    st.error("HF_TOKEN is missing.")
+    st.stop()
 
 if not token:
     st.error("HF_TOKEN is missing from .env")
